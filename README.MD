@@ -15,12 +15,7 @@ Panduan langkah demi langkah untuk menginstal dan mengonfigurasi aplikasi Larave
 ### 1. Clone Repositori
 
 ```bash
-https://github.com/Ex-Lord-Ryu/Harpa_Ending.git
-cd Harpa-No-Docker
-```
-buka bagian direktory dengan melakukan
-
-```bash
+git clone [url-repositori] Harpa-No-Docker
 cd Harpa-No-Docker
 ```
 
