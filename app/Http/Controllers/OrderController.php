@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Midtrans\CreateSnapTokenService;
 use Illuminate\Support\Facades\Log;
+use App\Models\Cart;
+use App\Models\CartItem;
 
 class OrderController extends Controller
 {
@@ -161,6 +163,9 @@ class OrderController extends Controller
             return redirect()->route('cart.index')->with('error', 'Keranjang belanja kosong.');
         }
 
+        // Simpan cart items sebelum dihapus untuk digunakan nanti
+        $cartItems = $cart->items->toArray();
+
         // Calculate subtotal from cart items
         $subtotal = 0;
         foreach ($cart->items as $cartItem) {
@@ -168,6 +173,7 @@ class OrderController extends Controller
         }
 
         DB::beginTransaction();
+        $order = null;
 
         try {
             // Create order
@@ -212,6 +218,11 @@ class OrderController extends Controller
                 if ($cartItem->product && $cartItem->product->track_inventory) {
                     $cartItem->product->stock_quantity -= $cartItem->quantity;
                     $cartItem->product->save();
+                }
+
+                // Catat produk sebagai dilihat saat pembelian
+                if ($cartItem->product) {
+                    $cartItem->product->recordView(Auth::id());
                 }
             }
 

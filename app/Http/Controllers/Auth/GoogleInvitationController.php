@@ -120,8 +120,12 @@ class GoogleInvitationController extends Controller
             // Login the user
             Auth::login($user);
 
-            return redirect()->intended('home')
-                ->with('success', 'Selamat datang! Anda berhasil bergabung sebagai ' . ucfirst($user->role));
+            // Tambahkan logika redirect berdasarkan role di bagian akhir handleGoogleCallback
+            if ($user->role === 'admin') {
+                return redirect()->intended('admin/dashboard');
+            } else {
+                return redirect()->intended('profile.show');
+            }
 
         } catch (Exception $e) {
             return redirect()->route('login')

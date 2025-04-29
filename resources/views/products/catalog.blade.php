@@ -58,20 +58,39 @@
         padding-top: 75%;
         overflow: hidden;
         background: #f9f9f9;
+        min-height: 200px;
+        border: 1px solid #eee;
     }
 
     .product-img {
         position: absolute;
         top: 0;
         left: 0;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+        transition: transform 0.7s ease;
+        z-index: 1;
+    }
+
+    .product-img::after {
+        content: "Gambar Error";
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
-        object-fit: cover;
-        transition: transform 0.7s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f9f9f9;
+        color: #e74c3c;
+        font-weight: bold;
+        z-index: 0;
     }
 
     .product-card:hover .product-img {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 
     .product-body {
@@ -701,6 +720,99 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
     }
+
+    /* Dashboard button styles */
+    .btn-back-to-dashboard {
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-back-to-dashboard:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Homepage button styles */
+    .btn-to-homepage {
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-to-homepage:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Navigation buttons container */
+    .navigation-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    @media (max-width: 576px) {
+        .navigation-buttons {
+            flex-direction: column;
+        }
+
+        .navigation-buttons .btn {
+            margin-right: 0 !important;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+    }
+
+    .product-img:hover {
+        transform: scale(1.05);
+    }
+
+    /* Product detail link styling */
+    .product-detail-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    .product-detail-link::after {
+        content: 'Lihat Detail';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(103, 119, 239, 0.7);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 18px;
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .product-detail-link:hover::after {
+        opacity: 1;
+    }
+
+    .product-name-link {
+        color: #333;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .product-name-link:hover {
+        color: #6777ef;
+        text-decoration: none;
+    }
 </style>
 @endpush
 
@@ -717,14 +829,19 @@
                     <i class='bx bx-arrow-back'></i> Kembali ke Beranda
                 </a>
                 @else
-                <div class="enhanced-breadcrumb-item">
-                    <a href="{{ route('home') }}">Dashboard</a>
-                </div>
-                <div class="enhanced-breadcrumb-separator">
-                    <i class="fas fa-chevron-right"></i>
-                </div>
-                <div class="enhanced-breadcrumb-item active">
-                    Katalog Produk
+                <div class="navigation-buttons">
+                    @if(auth()->user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-primary btn-back-to-dashboard mr-2">
+                        <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                    </a>
+                    @else
+                    <a href="{{ route('orders.index') }}" class="btn btn-primary btn-back-to-dashboard mr-2">
+                        <i class="fas fa-shopping-bag mr-1"></i> Pesanan
+                    </a>
+                    @endif
+                    <a href="/" class="btn btn-info btn-to-homepage">
+                        <i class="fas fa-home mr-1"></i> Beranda
+                    </a>
                 </div>
                 @endif
             </div>
@@ -811,16 +928,27 @@
                                 @endif
 
                                 <div class="product-img-container">
-                                    @if($product->image)
-                                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="product-img">
-                                    @else
-                                        <img src="{{ asset('img/no-image.png') }}" alt="No Image" class="product-img">
-                                    @endif
+                                    <a href="{{ route('products.detail', $product) }}" class="product-detail-link">
+                                        @if($product->image)
+                                            <img src="{{ asset('storage/' . $product->image) }}"
+                                                 alt="{{ $product->name }}"
+                                                 class="product-img"
+                                                 onerror="this.onerror=null; this.src='{{ asset('img/no-image.png') }}'">
+                                        @else
+                                            <img src="{{ asset('img/no-image.png') }}"
+                                                 alt="No Image"
+                                                 class="product-img">
+                                        @endif
+                                    </a>
                                 </div>
 
                                 <div class="product-body">
                                     <div class="product-category">Produk Unggulan</div>
-                                    <h5 class="product-title">{{ $product->name }}</h5>
+                                    <h5 class="product-title">
+                                        <a href="{{ route('products.detail', $product) }}" class="product-name-link">
+                                            {{ $product->name }}
+                                        </a>
+                                    </h5>
                                     <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
 
                                     <div class="product-description">
@@ -884,3 +1012,28 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Debug gambar produk
+    const productImages = document.querySelectorAll('.product-img');
+    console.log('Jumlah gambar produk:', productImages.length);
+
+    productImages.forEach((img, index) => {
+        console.log(`Gambar #${index + 1}:`, {
+            src: img.src,
+            width: img.width,
+            height: img.height,
+            visible: img.offsetParent !== null,
+            complete: img.complete
+        });
+
+        // Tambahkan event untuk mendeteksi error loading
+        img.addEventListener('error', function() {
+            console.error(`Error loading image #${index + 1}:`, img.src);
+        });
+    });
+});
+</script>
+@endpush

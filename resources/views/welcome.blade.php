@@ -18,6 +18,238 @@
             font-weight: 600;
             text-decoration: underline;
         }
+        /* Improved card styling */
+        .nft-list .item {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .nft-list .item .info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .nft-list .item img.product-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            padding: 15px;
+            transition: transform 0.3s ease;
+        }
+        .nft-list h5 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        .nft-list .btc p {
+            font-weight: 700;
+            color: #6777ef;
+            font-size: 15px;
+        }
+        .product-description {
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        .product-description-list p {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+        .details-btn {
+            background: linear-gradient(135deg, #6777ef, #3d4eda);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(103, 119, 239, 0.3);
+            margin-top: auto;
+            align-self: flex-start;
+        }
+        .details-btn:hover {
+            background: linear-gradient(135deg, #5a67d8, #354ada);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(103, 119, 239, 0.4);
+        }
+        .nft-list .bid {
+            padding: 15px;
+            border-top: 1px solid #f0f0f0;
+            background-color: #fafafa;
+        }
+        .btn-add-to-cart {
+            display: block;
+            width: 100%;
+            background: linear-gradient(135deg, #6777ef, #3d4eda);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(103, 119, 239, 0.3);
+        }
+        .btn-add-to-cart:hover {
+            background: linear-gradient(135deg, #5a67d8, #354ada);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(103, 119, 239, 0.4);
+        }
+        /* View count styling */
+        .view-count {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .view-count i {
+            margin-right: 4px;
+            color: #6777ef;
+        }
+        /* Improved modal styling */
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        #productDetailContent {
+            padding: 0;
+        }
+        .product-detail {
+            display: flex;
+            flex-direction: column;
+        }
+        .product-image {
+            width: 100%;
+            padding: 20px;
+            background-color: #f9f9f9;
+            text-align: center;
+        }
+        .product-info {
+            padding: 25px;
+        }
+        .product-info h3 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #6777ef;
+            margin-bottom: 20px;
+        }
+        .description {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #555;
+        }
+        .add-to-cart-form {
+            margin-top: 20px;
+        }
+        .quantity-container {
+            margin-bottom: 15px;
+        }
+        .quantity-input {
+            display: flex;
+            align-items: center;
+            width: 140px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            overflow: hidden;
+        }
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background-color: #f0f0f0;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .quantity-btn:hover {
+            background-color: #e0e0e0;
+        }
+        .quantity-input input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .quantity-input input:focus {
+            outline: none;
+        }
+        .add-to-cart-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            background: linear-gradient(135deg, #6777ef, #3d4eda);
+            color: white;
+            padding: 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(103, 119, 239, 0.3);
+        }
+        .add-to-cart-btn:hover {
+            background: linear-gradient(135deg, #5a67d8, #354ada);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(103, 119, 239, 0.4);
+        }
+        .stock {
+            display: flex;
+            align-items: center;
+            background-color: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .stock-label {
+            font-weight: 600;
+            color: #444;
+            margin-right: 8px;
+        }
+        .stock-value {
+            color: #28a745;
+            font-weight: 500;
+        }
+        @media (min-width: 768px) {
+            .product-detail {
+                flex-direction: row;
+            }
+            .product-image {
+                width: 40%;
+                padding: 30px;
+            }
+            .product-info {
+                width: 60%;
+            }
+        }
+        @media (max-width: 576px) {
+            .nft-list .item img.product-image {
+                height: 150px;
+            }
+        }
     </style>
 @endpush
 
@@ -63,7 +295,10 @@
                             <div>
                                 <h5>{{ $product->name }}</h5>
                                 <div class="btc">
-                                    <p>{{ number_format($product->price, 0, ',', '.') }}</p>
+                                    <p>Rp {{ number_format($product->price, 0, ',', '.') }}</p>
+                                </div>
+                                <div class="view-count">
+                                    <i class='bx bx-show'></i> <span>{{ $product->views ?? 0 }} kali dilihat</span>
                                 </div>
                             </div>
                             <div class="product-description">
@@ -80,8 +315,9 @@
                                 </div>
                             </div>
                             <div class="product-details">
-                                <button class="details-btn" onclick="showDetails('{{ $product->id }}')">Lihat
-                                    Detail</button>
+                                <button class="details-btn" onclick="showDetails('{{ $product->id }}')">
+                                    <i class='bx bx-info-circle'></i> Lihat Detail
+                                </button>
                             </div>
                         </div>
                         <div class="bid">
@@ -91,11 +327,13 @@
                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                                 <input type="hidden" name="quantity" value="1">
                                 <input type="hidden" name="redirect_to" value="{{ route('cart.index') }}">
-                                <button type="submit" class="btn-add-to-cart">Tambahkan ke Keranjang</button>
+                                <button type="submit" class="btn-add-to-cart">
+                                    <i class='bx bx-cart-add'></i> Tambahkan ke Keranjang
+                                </button>
                             </form>
                             @else
-                            <a href="{{ route('login') }}" class="btn-add-to-cart" style="display: block; text-align: center;">
-                                Login untuk Membeli
+                            <a href="{{ route('login') }}" class="btn-add-to-cart">
+                                <i class='bx bx-log-in'></i> Login untuk Membeli
                             </a>
                             @endauth
                         </div>
@@ -235,6 +473,17 @@
                 modal.classList.add('show');
             }, 10);
 
+            // Record view for authenticated users
+            @auth
+            fetch(`/api/products/${productId}/record-view`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            @endauth
+
             // Use AJAX to fetch product details
             fetch(`/api/products/${productId}`)
                 .then(response => response.json())
@@ -243,7 +492,7 @@
                     let productHtml = `
                         <div class="product-detail">
                             <div class="product-image">
-                                <img src="${data.image_url}" alt="${data.name}">
+                                <img src="${data.image_url}" alt="${data.name}" style="max-width: 100%; max-height: 300px;">
                             </div>
                             <div class="product-info">
                                 <h3>${data.name}</h3>
@@ -280,7 +529,7 @@
                                 <div class="login-prompt" style="background-color: rgba(103, 119, 239, 0.1); padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 3px solid #6777ef;">
                                     <p>Untuk menambahkan produk ke keranjang, silakan <a href="{{ route('login') }}" style="color: #6777ef; font-weight: bold;">login</a> terlebih dahulu.</p>
                                 </div>
-                                <a href="{{ route('login') }}" class="add-to-cart-btn" style="display: inline-block; text-decoration: none; text-align: center; background: linear-gradient(135deg, #6777ef, #3d4eda); color: white; padding: 12px 20px; border-radius: 5px; font-weight: 600; margin-top: 10px;">
+                                <a href="{{ route('login') }}" class="add-to-cart-btn" style="display: inline-flex; text-decoration: none; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #6777ef, #3d4eda); color: white; padding: 12px 20px; border-radius: 50px; font-weight: 600; margin-top: 10px;">
                                     <i data-feather="log-in"></i>
                                     Login untuk Membeli
                                 </a>

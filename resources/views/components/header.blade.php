@@ -19,6 +19,9 @@
                 <div class="dropdown-title">
                     Selamat Datang, {{ substr(auth()->user()->name, 0, 10) }}
                 </div>
+                <a class="dropdown-item has-icon profile" href="{{ route('profile.show') }}">
+                    <i class="fa fa-user"></i> Profile
+                </a>
                 <a class="dropdown-item has-icon edit-profile" href="{{ route('profile.edit') }}">
                     <i class="fa fa-user"></i> Edit Profile
                 </a>

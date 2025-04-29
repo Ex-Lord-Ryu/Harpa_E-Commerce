@@ -74,7 +74,12 @@ class GoogleController extends Controller
             // Login the user
             Auth::login($user);
 
-            return redirect()->intended('home');
+            // Redirect based on user role
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
+
+            return redirect()->route('profile.show');
 
         } catch (Exception $e) {
             return redirect()->route('login')

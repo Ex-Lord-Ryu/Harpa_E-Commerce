@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -81,6 +83,18 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        // Hanya catat view jika user sudah login
+        if (Auth::check()) {
+            // Catat produk sebagai dilihat dengan mekanisme cooldown 1 menit
+            // Jika user sudah melihat produk ini dalam 1 menit terakhir, view tidak bertambah
+            $viewRecorded = $product->recordView(Auth::id());
+
+            if ($viewRecorded) {
+                // Pencatatan view berhasil (baru pertama kali atau setelah cooldown)
+                Log::info("View recorded for product ID: {$product->id} by user ID: " . Auth::id());
+            }
+        }
+
         return view('products.show', compact('product'));
     }
 
@@ -279,5 +293,23 @@ class ProductController extends Controller
     {
         // Remove all dots (thousand separators in ID format)
         return str_replace('.', '', $price);
+    }
+
+    /**
+     * Record view for product via API
+     */
+    public function recordViewApi(Product $product)
+    {
+        $viewRecorded = false;
+
+        if (Auth::check()) {
+            $viewRecorded = $product->recordView(Auth::id());
+        }
+
+        return response()->json([
+            'success' => true,
+            'view_recorded' => $viewRecorded,
+            'views' => $product->views
+        ]);
     }
 }

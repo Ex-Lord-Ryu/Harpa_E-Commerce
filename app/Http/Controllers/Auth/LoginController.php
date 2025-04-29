@@ -31,7 +31,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/profile';
 
     /**
      * Create a new controller instance.
@@ -91,5 +91,21 @@ class LoginController extends Controller
             ->withErrors([
                 $this->username() => trans('auth.failed'),
             ]);
+    }
+
+    /**
+     * Redirect users based on their role after successful login/verification.
+     *
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirectBasedOnRole(User $user)
+    {
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        return redirect()->route('profile.show');
     }
 }

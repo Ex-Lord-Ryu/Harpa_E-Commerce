@@ -48,10 +48,17 @@
                     <span>Register</span>
                 </a>
             @else
-                <a href="{{ route('home') }}" class="auth-link login">
+                @if(auth()->user()->role === 'admin')
+                <a href="{{ route('admin.dashboard') }}" class="auth-link login">
                     <i class='bx bx-user'></i>
                     <span>Dashboard</span>
                 </a>
+                @else
+                <a href="{{ route('profile.show') }}" class="auth-link login">
+                    <i class='bx bx-user-circle'></i>
+                    <span>Profile</span>
+                </a>
+                @endif
                 <a href="{{ route('orders.index') }}" class="auth-link orders">
                     <i class='bx bx-shopping-bag'></i>
                     <span>Pesanan</span>

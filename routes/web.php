@@ -11,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MidtransController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\ProductCatalogController;
+use App\Http\Controllers\ProductDetailController;
 
 Route::get('/', function () {
     $featuredProducts = Product::where('featured', true)->get();
@@ -19,6 +20,7 @@ Route::get('/', function () {
 
 // Product API endpoint
 Route::get('/api/products/{product}', [ProductController::class, 'getProductDetails']);
+Route::post('/api/products/{product}/record-view', [ProductController::class, 'recordViewApi'])->middleware('auth');
 
 Auth::routes([
     'reset' => true, // keep password.reset route for final password resetting
@@ -60,6 +62,7 @@ Route::get('invitation/google/callback', [App\Http\Controllers\Auth\GoogleInvita
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/profile/change-password', [ProfileController::class, 'changepassword'])->name('profile.change-password');
@@ -68,6 +71,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Product Catalog - restricted to authenticated users
     Route::get('/products/catalog', [ProductCatalogController::class, 'index'])->name('products.catalog');
+
+    // Product Detail
+    Route::get('/products/{product}/detail', [ProductDetailController::class, 'show'])->name('products.detail');
 
     // Cart Routes - restricted to authenticated users
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
@@ -110,6 +116,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Admin Routes
     Route::middleware(['admin'])->prefix('admin')->name('admin.')->group(function () {
+        // Admin Dashboard
+        Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
         // Admin Order Routes
         Route::get('/orders', [App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
         Route::get('/orders/filter', [App\Http\Controllers\Admin\OrderController::class, 'filterByStatus'])->name('orders.filter');

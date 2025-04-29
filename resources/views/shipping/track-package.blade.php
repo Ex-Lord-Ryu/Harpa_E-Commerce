@@ -217,7 +217,7 @@
             $('.tracking-not-found').hide();
 
             $.ajax({
-                url: '{{ route("shipping.track-waybill") }}',
+                url: '{{ route("shipping.track.search") }}',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',

@@ -28,7 +28,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/profile';
 
     /**
      * Create a new controller instance.
@@ -80,7 +80,14 @@ class VerificationController extends Controller
         // Log the user in
         Auth::login($user);
 
-        return redirect('/home')->with('success',
+        // Redirect based on user role
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.dashboard')->with('success',
+                $wasUnverified ? 'Registration completed successfully!' : 'Login successful!'
+            );
+        }
+
+        return redirect()->route('profile.show')->with('success',
             $wasUnverified ? 'Registration completed successfully!' : 'Login successful!'
         );
     }
