@@ -263,20 +263,6 @@
             <div class="left">
                 <h1>Harpa Mulut – Saatnya UMKM Bersuara! <span>Gallery Bejo</span></h1>
                 <p>Kami percaya bahwa setiap UMKM memiliki cerita unik.</p>
-                @auth
-                <a href="{{ route('products.catalog') }}">
-                    <i class='bx bx-basket'></i>
-                    <span>Pesan Sekarang</span>
-                </a>
-                @else
-                <a href="{{ route('login') }}">
-                    <i class='bx bx-log-in'></i>
-                    <span>Login untuk Belanja</span>
-                </a>
-                <div class="login-prompt">
-                    <p>Silakan <a href="{{ route('login') }}">login</a> atau <a href="{{ route('register') }}">daftar</a> terlebih dahulu untuk melihat katalog produk kami.</p>
-                </div>
-                @endauth
             </div>
             <img src="{{ asset('img/img/tp.png') }}">
         </header>
@@ -321,21 +307,6 @@
                             </div>
                         </div>
                         <div class="bid">
-                            @auth
-                            <form action="{{ route('cart.add') }}" method="POST">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                <input type="hidden" name="quantity" value="1">
-                                <input type="hidden" name="redirect_to" value="{{ route('cart.index') }}">
-                                <button type="submit" class="btn-add-to-cart">
-                                    <i class='bx bx-cart-add'></i> Tambahkan ke Keranjang
-                                </button>
-                            </form>
-                            @else
-                            <a href="{{ route('login') }}" class="btn-add-to-cart">
-                                <i class='bx bx-log-in'></i> Login untuk Membeli
-                            </a>
-                            @endauth
                         </div>
                     </div>
                 @empty
@@ -473,22 +444,10 @@
                 modal.classList.add('show');
             }, 10);
 
-            // Record view for authenticated users
-            @auth
-            fetch(`/api/products/${productId}/record-view`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-            });
-            @endauth
-
             // Use AJAX to fetch product details
             fetch(`/api/products/${productId}`)
                 .then(response => response.json())
                 .then(data => {
-                    let isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
                     let productHtml = `
                         <div class="product-detail">
                             <div class="product-image">
@@ -503,38 +462,6 @@
                                     <span class="stock-value">${data.stock_quantity ?? 'Tersedia'}</span>
                                 </div>
                     `;
-
-                    if (isLoggedIn) {
-                        productHtml += `
-                                <form action="{{ route('cart.add') }}" method="POST" class="add-to-cart-form">
-                                    @csrf
-                                    <input type="hidden" name="product_id" value="${data.id}">
-                                    <input type="hidden" name="redirect_to" value="{{ route('cart.index') }}">
-                                    <div class="quantity-container">
-                                        <label for="quantity">Jumlah:</label>
-                                        <div class="quantity-input">
-                                            <button type="button" class="quantity-btn minus" onclick="decrementQuantity(this)">-</button>
-                                            <input type="number" name="quantity" id="quantity" value="1" min="1" max="${data.stock_quantity || 99}">
-                                            <button type="button" class="quantity-btn plus" onclick="incrementQuantity(this)">+</button>
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="add-to-cart-btn">
-                                        <i data-feather="shopping-cart"></i>
-                                        Tambahkan ke Keranjang
-                                    </button>
-                                </form>
-                        `;
-                    } else {
-                        productHtml += `
-                                <div class="login-prompt" style="background-color: rgba(103, 119, 239, 0.1); padding: 15px; border-radius: 5px; margin: 20px 0; border-left: 3px solid #6777ef;">
-                                    <p>Untuk menambahkan produk ke keranjang, silakan <a href="{{ route('login') }}" style="color: #6777ef; font-weight: bold;">login</a> terlebih dahulu.</p>
-                                </div>
-                                <a href="{{ route('login') }}" class="add-to-cart-btn" style="display: inline-flex; text-decoration: none; align-items: center; justify-content: center; gap: 10px; background: linear-gradient(135deg, #6777ef, #3d4eda); color: white; padding: 12px 20px; border-radius: 50px; font-weight: 600; margin-top: 10px;">
-                                    <i data-feather="log-in"></i>
-                                    Login untuk Membeli
-                                </a>
-                        `;
-                    }
 
                     productHtml += `
                             </div>
