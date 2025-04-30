@@ -96,11 +96,20 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Kurir</label>
-                                        <select class="form-control" id="courier" required>
-                                            <option value="jne">JNE</option>
-                                            <option value="pos">POS Indonesia</option>
-                                            <option value="tiki">TIKI</option>
-                                        </select>
+                                        <div class="courier-checkbox-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="courier-jne" value="jne">
+                                                <label class="custom-control-label" for="courier-jne">JNE</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="courier-pos" value="pos">
+                                                <label class="custom-control-label" for="courier-pos">POS Indonesia</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="courier-tiki" value="tiki">
+                                                <label class="custom-control-label" for="courier-tiki">TIKI</label>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -179,18 +188,23 @@
             const originCity = $('#origin_city').val();
             const destinationCity = $('#destination_city').val();
             const weight = $('#weight').val();
-            const courier = $('#courier').val();
+            const selectedCouriers = $('.courier-checkbox-group input[type="checkbox"]:checked').map(function() {
+                return $(this).val();
+            }).get();
 
-            if (!originCity || !destinationCity || !weight || !courier) {
+            if (!originCity || !destinationCity || !weight || selectedCouriers.length === 0) {
                 Swal.fire({
                     title: 'Error!',
-                    text: 'Semua field harus diisi',
+                    text: 'Semua field harus diisi dan minimal pilih satu kurir',
                     icon: 'error'
                 });
                 return;
             }
 
-            calculateShipping(originCity, destinationCity, weight, courier);
+            // Calculate shipping for each selected courier
+            selectedCouriers.forEach(courier => {
+                calculateShipping(originCity, destinationCity, weight, courier);
+            });
         });
 
         // Function to get cities by province ID
@@ -248,7 +262,7 @@
                     $('.loading-overlay').hide();
 
                     if (response.status === 'success') {
-                        displayShippingResults(response.data[0]);
+                        displayShippingResults(response.data[0], courier);
                     } else {
                         Swal.fire({
                             title: 'Error!',
@@ -270,11 +284,18 @@
         }
 
         // Function to display shipping results
-        function displayShippingResults(data) {
-            const courierName = data.name.toUpperCase();
-            const costs = data.costs;
+        function displayShippingResults(data, courier) {
+            console.log('Shipping data received:', data);
 
-            if (costs.length === 0) {
+            // Handle both array and single object
+            let services = [];
+            if (Array.isArray(data)) {
+                services = data;
+            } else if (data && data.service) {
+                services = [data];
+            }
+
+            if (services.length === 0) {
                 Swal.fire({
                     title: 'Informasi',
                     text: 'Tidak ada layanan pengiriman yang tersedia untuk rute ini',
@@ -285,26 +306,35 @@
 
             let html = '';
 
-            $.each(costs, function(key, service) {
+            $.each(services, function(key, service) {
+                if (!service || !service.cost || !service.cost[0]) {
+                    console.error('Invalid service data:', service);
+                    return;
+                }
+
                 const cost = service.cost[0];
-                const serviceCode = service.service;
+                const serviceCode = service.service || 'N/A';
+                const description = service.description || 'Tidak ada deskripsi';
+                const etd = cost.etd || 'N/A';
+                const value = cost.value || 0;
 
                 html += `
                     <tr class="shipping-row">
                         <td class="service-column">
                             <div class="service-code">${serviceCode}</div>
-                            <div class="service-name">${courierName}</div>
+                            <div class="service-name">${courier.toUpperCase()}</div>
                         </td>
-                        <td class="description-column">${service.description}</td>
+                        <td class="description-column">${description}</td>
                         <td class="estimation-column">
-                            <span class="estimation-badge">${cost.etd} hari</span>
+                            <span class="estimation-badge">${etd} hari</span>
                         </td>
-                        <td class="price-column">Rp ${formatNumber(cost.value)}</td>
+                        <td class="price-column">Rp ${formatNumber(value)}</td>
                     </tr>
                 `;
             });
 
-            $('#shipping-results').html(html);
+            // Append new results instead of replacing
+            $('#shipping-results').append(html);
             $('.shipping-results').show();
         }
 
@@ -312,6 +342,12 @@
         function formatNumber(number) {
             return new Intl.NumberFormat('id-ID').format(number);
         }
+
+        // Clear results when form is reset
+        $('#shipping-form').on('reset', function() {
+            $('#shipping-results').empty();
+            $('.shipping-results').hide();
+        });
     });
 </script>
 @endpush
