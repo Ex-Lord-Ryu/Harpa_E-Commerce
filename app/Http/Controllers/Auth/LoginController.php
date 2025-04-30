@@ -108,4 +108,16 @@ class LoginController extends Controller
 
         return redirect()->route('profile.show');
     }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        return $this->redirectBasedOnRole($user);
+    }
 }

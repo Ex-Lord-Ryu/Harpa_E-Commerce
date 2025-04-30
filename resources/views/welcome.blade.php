@@ -304,11 +304,15 @@
                                         $lines = explode("\n", $product->description);
                                         $shortDescription = array_slice($lines, 0, 3);
                                     @endphp
-                                    @foreach($shortDescription as $line)
-                                        @if(trim($line))
-                                            <p>{{ $line }}</p>
-                                        @endif
-                                    @endforeach
+                                    @if(count($shortDescription) > 0)
+                                        @foreach($shortDescription as $line)
+                                            @if(trim($line))
+                                                <p>{{ $line }}</p>
+                                            @endif
+                                        @endforeach
+                                    @else
+                                        <p class="text-muted">Tidak ada deskripsi produk</p>
+                                    @endif
                                 </div>
                             </div>
                             <div class="product-details">
@@ -486,6 +490,9 @@
                 .then(response => response.json())
                 .then(data => {
                     let isLoggedIn = {{ Auth::check() ? 'true' : 'false' }};
+                    let description = data.description && data.description.trim() !== ''
+                        ? data.description.replace(/\\n/g, '<br>')
+                        : '<span class="text-muted">Tidak ada detail produk</span>';
                     let productHtml = `
                         <div class="product-detail">
                             <div class="product-image">
@@ -494,7 +501,7 @@
                             <div class="product-info">
                                 <h3>${data.name}</h3>
                                 <div class="price">${formatCurrency(data.price)}</div>
-                                <div class="description">${data.description.replace(/\n/g, '<br>')}</div>
+                                <div class="description">${description}</div>
                                 <div class="stock">
                                     <span class="stock-label">Stok:</span>
                                     <span class="stock-value">${data.stock_quantity ?? 'Tersedia'}</span>

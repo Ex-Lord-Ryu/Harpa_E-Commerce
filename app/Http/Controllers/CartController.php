@@ -34,7 +34,7 @@ class CartController extends Controller
         return view('cart.index', [
             'items' => $items,
             'totalItems' => $items->sum('quantity'),
-            'total' => $cart->total,
+            'total' => $cart->total_amount,
         ]);
     }
 
@@ -75,9 +75,10 @@ class CartController extends Controller
         if ($cartItem) {
             // Update quantity if product already exists in cart
             Log::info('Updating existing cart item: ' . $cartItem->id . ' for product: ' . $product->id);
-            $cartItem->quantity += $validated['quantity'];
+            $cartItem->quantity = $validated['quantity'];
             $cartItem->calculateSubtotal();
-            $cartItem->save(); // Make sure we save the update
+            $cartItem->save();
+            $cart->updateTotal();
         } else {
             // Add new item to cart
             Log::info('Adding new cart item for product: ' . $product->id);
@@ -91,6 +92,7 @@ class CartController extends Controller
 
             $result = $cart->items()->save($cartItem);
             Log::info('Save result: ' . ($result ? 'success' : 'failed'));
+            $cart->updateTotal(); // Update cart total after adding new item
         }
 
         // Update cart total

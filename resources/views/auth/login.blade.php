@@ -105,6 +105,11 @@
                                             {{ __('Register') }}
                                         </a>
                                     </div>
+                                    <div class="mt-3">
+                                        <a href="{{ url('/') }}" class="btn btn-lg w-100" style="border-radius: 10px; background: linear-gradient(to right, #e9c46a, #f4a261); color: #2a3541; border: none; font-weight: 600; margin-top: 10px;">
+                                            &larr; Kembali ke Halaman Utama
+                                        </a>
+                                    </div>
                                 </div>
                             </form>
                         </div>
