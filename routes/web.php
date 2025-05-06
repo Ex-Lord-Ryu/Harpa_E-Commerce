@@ -156,6 +156,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/hakakses/edit/{id}', [App\Http\Controllers\HakaksesController::class, 'edit'])->name('hakakses.edit')->middleware('admin');
         Route::put('/hakakses/update/{id}', [App\Http\Controllers\HakaksesController::class, 'update'])->name('hakakses.update')->middleware('admin');
         Route::delete('/hakakses/delete/{id}', [App\Http\Controllers\HakaksesController::class, 'destroy'])->name('hakakses.delete')->middleware('admin');
+        Route::patch('/hakakses/promote/{id}', [App\Http\Controllers\HakaksesController::class, 'promote'])->name('hakakses.promote')->middleware('admin');
+        Route::patch('/hakakses/unpromote/{id}', [App\Http\Controllers\HakaksesController::class, 'unpromote'])->name('hakakses.unpromote')->middleware('admin');
 
         Route::post('/hakakses/{id}/send-otp', [App\Http\Controllers\HakaksesController::class, 'sendOtp'])->name('hakakses.send-otp')->middleware('admin');
         Route::post('/hakakses/{id}/verify-otp', [App\Http\Controllers\HakaksesController::class, 'verifyOtp'])->name('hakakses.verify-otp')->middleware('admin');

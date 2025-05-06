@@ -1,6 +1,6 @@
 # Harpa E-Commerce
 
-Panduan langkah demi langkah untuk menginstal dan mengonfigurasi aplikasi Laravel ini.
+Panduan langkah demi langkah untuk menginstal dan mengonfigurasi aplikasi Laravel ini..
 
 ## Persyaratan Sistem
 
