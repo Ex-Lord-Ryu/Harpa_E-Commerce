@@ -15,7 +15,7 @@ Panduan langkah demi langkah untuk menginstal dan mengonfigurasi aplikasi Larave
 ### 1. Clone Repositori
 
 ```bash
-https://github.com/Ex-Lord-Ryu/Harpa_Ending.git
+https://github.com/Ex-Lord-Ryu/Harpa_E-Commerce.git
 ```
 buka bagian direktory dengan melakukan
 
